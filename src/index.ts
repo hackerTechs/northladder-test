@@ -112,7 +112,8 @@ app.get("/events/:id", (req, res) => {
 
 // UPDATE EVENT
 app.put("/events/:id", jsonParser, (req, res) => {
-  const { id, eventName, eventDate } = req.body;
+  const { id } = req.params;
+
   if (!id) {
     return response.error(res, {
       message: "No event found",
@@ -120,14 +121,15 @@ app.put("/events/:id", jsonParser, (req, res) => {
     });
   }
 
-  if (!eventName.trim()) {
+  const { eventName, eventDate } = req.body;
+  if (eventName?.trim() === "") {
     return response.error(res, {
       message: "Event name is required",
       status: 400,
     });
   }
 
-  if (!eventDate.trim()) {
+  if (eventDate?.trim() === "") {
     return response.error(res, {
       message: "Event date is required",
       status: 400,
